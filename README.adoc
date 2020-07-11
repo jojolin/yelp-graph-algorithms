@@ -61,13 +61,18 @@ bin\neo4j-admin.bat import --database=yelp.db \
 --relationships=IN_COUNTRY=import\yelp-data\area_IN_COUNTRY_country_header.csv,import\yelp-data\area_IN_COUNTRY_country.csv \
 --multiline-fields=true --skip-bad-relationships=true
 ```
+* step 4.1: Change line in **path-of-yelp-database**\bin\neo4j-admin.ps1 as the following:
 
-* step 4.1: Navigate to the and run the command of step 4.
+```
+line 11:Import-Module "$PSScriptRoot\Neo4j-Management.psd1" -> Import-Module "G:\Neo4jDesktop\neo4jDatabases\database-a1eb560d-1d06-44ac-a5ef-95cfb100508c\installation-4.0.4\bin\Neo4j-Management.psd1"
+```
 
-* step 4.2: Update the neo4j.conf file to contain this line:
+* step 4.2: Navigate to the **path-of-yelp-database** and run the command of step 4.
+
+* step 4.3: Update the  **path-of-yelp-database**\conf\neo4j.conf file to contain this line:
 
 ```
 dbms.active_database=yelp.db
 ```
 
-* This should work on your own.
+* Restart the Neo4j Desktop and it should work on your own.
