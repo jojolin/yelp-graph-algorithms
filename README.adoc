@@ -1,32 +1,71 @@
-= Yelp Dataset Graph
+= For the original README.adoc, please see https://github.com/mneedham/yelp-graph-algorithms[README.adoc]
 
-* Download the JSON version of the https://www.yelp.co.uk/dataset/download[Yelp Dataset Challenge^] and extract it into the `dataset` directory
+Some steps need to pre-do to get it run on my machine.
+```
+windows 7
+Python 3.6.8
+Neo4j Desktop 1.2.9
+Neo4j 4.0.4
+```
 
-* Run the following command to extract cities, areas, and countries:
+* step 1: install dependences of reverse_geocoder
+```
+pip install scipy-1.5.1-cp36-cp36m-win_amd64.whl  
+pip install numpy-1.19.0-cp36-cp36m-win_amd64.whl
+pip install reverse_geocoder
+```
+
+* step 1.1: Run the following command to extract cities, areas, and countries:
 
 ```
 python lat_long_expansion.py
 ```
 
-* Run the following command to create Neo4j Import Tool CSV files:
+* step 1.2: Run the following command to create Neo4j Import Tool CSV files:
 
 ```
 python json_to_csv.py
 ```
 
-* Navigate to the Neo4j home directory and run the following command:
+* step 2: Create new desktop database yelp, referer to https://neo4j.com/developer/desktop-csv-import[desktop-csv-import]
 
+* step 3: Navigate to the path-of-yelp-database, for me
 ```
-sh /path/to/import.sh
-
-Neo4j version: 3.3.4
-Importing the contents of these files into /path/to/data/databases/yelp.db:
+G:\Neo4jDesktop\neo4jDatabases\database-a1eb560d-1d06-44ac-a5ef-95cfb100508c\installation-4.0.4
 ```
 
-* Update the neo4j.conf file to contain this line:
+* step 4: Move data of step 1.2 to path-of-yelp-database\import\yelp-data and change the import.sh to the following 
+```
+# setup the right JAVA run time (open jdk, distributed with Neo4j Desktop)
+set JAVA_HOME=G:\Neo4jDesktop\distributions\java\zulu11.35.13-ca-jdk11.0.5
+# add to PATH env.
+set PATH=%JAVA_HOME%\bin;%PATH%
+
+# use --skip-bad-relationships=true instead, and some trick when run on windows.
+bin\neo4j-admin.bat import --database=yelp.db \
+--nodes=Business=import\yelp-data\business_header.csv,import\yelp-data\business.csv \
+--nodes=Category=import\yelp-data\category_header.csv,import\yelp-data\category.csv \
+--nodes=User=import\yelp-data\user_header.csv,import\yelp-data\user.csv \
+--nodes=Review=import\yelp-data\review_header.csv,import\yelp-data\review.csv \
+--nodes=City=import\yelp-data\city_header.csv,import\yelp-data\city.csv \
+--nodes=Area=import\yelp-data\area_header.csv,import\yelp-data\area.csv \
+--nodes=Country=import\yelp-data\country_header.csv,import\yelp-data\country.csv \
+--relationships=IN_CATEGORY=import\yelp-data\business_IN_CATEGORY_category_header.csv,import\yelp-data\business_IN_CATEGORY_category.csv \
+--relationships=FRIENDS=import\yelp-data\user_FRIENDS_user_header.csv,import\yelp-data\user_FRIENDS_user.csv \
+--relationships=WROTE=import\yelp-data\user_WROTE_review_header.csv,import\yelp-data\user_WROTE_review.csv \
+--relationships=REVIEWS=import\yelp-data\review_REVIEWS_business_header.csv,import\yelp-data\review_REVIEWS_business.csv \
+--relationships=IN_CITY=import\yelp-data\business_IN_CITY_city_header.csv,import\yelp-data\business_IN_CITY_city.csv \
+--relationships=IN_AREA=import\yelp-data\city_IN_AREA_area_header.csv,import\yelp-data\city_IN_AREA_area.csv \
+--relationships=IN_COUNTRY=import\yelp-data\area_IN_COUNTRY_country_header.csv,import\yelp-data\area_IN_COUNTRY_country.csv \
+--multiline-fields=true --skip-bad-relationships=true
+```
+
+* step 4.1: Navigate to the path-of-yelp-database and run the command of step 4:
+
+* step 4.2: Update the neo4j.conf file to contain this line:
 
 ```
 dbms.active_database=yelp.db
 ```
 
-* Restart Neo4j and we're good to go
+* This should work on your own.
