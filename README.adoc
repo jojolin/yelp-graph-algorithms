@@ -29,12 +29,12 @@ python json_to_csv.py
 
 * step 2: Create new desktop database yelp, referer to https://neo4j.com/developer/desktop-csv-import[desktop-csv-import]
 
-* step 3: Navigate to the path-of-yelp-database, for me
+* step 3: Navigate to the **path-of-yelp-database**, for me
 ```
 G:\Neo4jDesktop\neo4jDatabases\database-a1eb560d-1d06-44ac-a5ef-95cfb100508c\installation-4.0.4
 ```
 
-* step 4: Move data of step 1.2 to path-of-yelp-database\import\yelp-data and change the import.sh to the following 
+* step 4: Move data of step 1.2 to **path-of-yelp-database**\import\yelp-data and change the import.sh to the following 
 ```
 # setup the right JAVA run time (open jdk, distributed with Neo4j Desktop)
 set JAVA_HOME=G:\Neo4jDesktop\distributions\java\zulu11.35.13-ca-jdk11.0.5
@@ -60,7 +60,7 @@ bin\neo4j-admin.bat import --database=yelp.db \
 --multiline-fields=true --skip-bad-relationships=true
 ```
 
-* step 4.1: Navigate to the path-of-yelp-database and run the command of step 4:
+* step 4.1: Navigate to the and run the command of step 4:
 
 * step 4.2: Update the neo4j.conf file to contain this line:
 
